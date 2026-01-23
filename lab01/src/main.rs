@@ -132,7 +132,7 @@ fn display(table: Vec<u8>, num_variables: usize){
 
             // If the inputted value does not include the last value of the truth table, fill in the rest of the table.
             if table[table.len()-1] >> 1 != 0b11{
-                for missing_value in (table[table.len()-1] + 1)..=3{
+                for missing_value in (table[table.len()-1] + 1) >> 1..=0b11{
                     println!("{:02b}|0 ", missing_value);
                 };
             }
