@@ -1,3 +1,5 @@
+// Logic expression from truth table generator by Aiden Otto
+
 use std::io;
 
 const MAX_VARIABLES: usize = 4;
@@ -9,7 +11,11 @@ fn main() {
     let mut input = String::new();
 
     // Let the user know whats goin on
-    println!("Input a truth table, enter nothing to continue:");
+    println!("Input binary truth table lines one at a time.\n
+You may use a maximum of {} variables and 1 function indicator in your entries.\n
+An example entry is 01011, with the first four bits setting the four variables
+and the last indicating that it is represented in the function.\n
+Enter nothing to finish:", MAX_VARIABLES);
 
     loop {
         // 1. Get input from the user
