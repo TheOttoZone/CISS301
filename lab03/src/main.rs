@@ -1,7 +1,72 @@
 use std::io;
+use std::io::Write;
 
 fn main(){
-    println!("{}", find_pi(100));
+
+    loop{
+        println!("\nChoose a calculation to do:
+1. Factorial of n
+2. Fibonacci sequence of n numbers
+3. Pi calculated to n digits up to 15
+4. Quit
+----------------------------------------");
+
+        let number = get_input();
+
+        match number {
+            1 => {
+                print!("\nType a number to find the factorial of: ");
+                io::stdout().flush().unwrap();
+                let fac_num = get_input();
+
+                println!("\n{}! = {}", fac_num, factorial(fac_num));
+            }
+
+            2 => {
+                print!("\nType a number to calculate the fibonacci sequence to: ");
+                io::stdout().flush().unwrap();
+                let fib_num = get_input();
+
+                println!("\nFibonacci {} = {}", fib_num, fibonacci(fib_num));
+            }
+
+            3 => {
+                print!("\nType a number to calculate pi to (up to 15): ");
+                io::stdout().flush().unwrap();
+                let pi_num = get_input();
+
+                if pi_num > 15{
+                    println!("\nInput larger than 15, printing to only 15 digits.")
+                }
+                println!("\nPi to {} digits = {}", pi_num, find_pi(pi_num));
+            }
+
+            4 => break,
+            
+            _ => continue,
+        }
+    }
+}
+
+fn get_input() -> u64 {
+    loop{
+        // Get user input
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).expect("Failed to read line");
+
+        // If the user inputs nothing, exit the input step
+        if input.trim().is_empty() {
+            println!("You didn't input anything!\n");
+            continue;
+        }
+    
+        // Check if input is a valid integer
+        match input.trim().parse::<u64>(){
+            Ok(num) => return num,
+            Err(_) => println!("That was not a valid positive number!"),
+        }  
+    }
+
 }
 
 // factorial algorithm from https://programming-idioms.org/idiom/31/recursive-factorial-simple/450/rust 
@@ -28,18 +93,18 @@ fn fibonacci(n: u64) -> u64 {
     b
 }
 
-
-fn find_pi(n: usize) -> f64{
+// https://en.wikipedia.org/wiki/Gauss%E2%80%93Legendre_algorithm 
+fn find_pi(n: u64) -> f64{
     let mut a = 1.0;
     let mut b = 1.0 / 2.0_f64.sqrt();
     let mut p = 1.0;
     let mut t = 1.0/4.0;
 
-    for _ in 0..n{
+    for _ in 0..10{
         let a_next = (a + b)/ 2.0;
         let b_next = (a * b).sqrt();
         let p_next = 2.0 * p;
-        let t_next = t - p * (a_next - a).powi(2);
+        let t_next = t - p * (a_next - a).powf(2.0);
 
         a = a_next;
         b = b_next;
@@ -47,6 +112,7 @@ fn find_pi(n: usize) -> f64{
         t = t_next;
     }
 
-    let pi = ((a+b).powi(2))/(4.0 * t);
-    pi
+    let pi = ((a+b).powf(2.0))/(4.0 * t);
+    let result = f64::trunc(pi * (10.0_f64.powf(n as f64))) / (10.0_f64.powf(n as f64));
+    result
 }
