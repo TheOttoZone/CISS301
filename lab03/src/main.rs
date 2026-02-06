@@ -37,11 +37,12 @@ fn main(){
             3 => {
                 print!("\nType a number of digits to calculate pi to (up to 15): ");
                 io::stdout().flush().unwrap();
-                let pi_num = get_input();
+                let mut pi_num = get_input();
 
                 // im too lazy to code higher capacity stuff
                 if pi_num > 15{
-                    println!("\nInput larger than 15, printing to only 15 digits.")
+                    println!("\nInput larger than 15, printing to only 15 digits.");
+                    pi_num = 15;
                 }
                 println!("\nPi to {} digits = {}", pi_num, find_pi(pi_num));
             }
