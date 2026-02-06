@@ -11,14 +11,18 @@ fn main(){
 4. Quit
 ----------------------------------------");
 
+        // call input function
         let number = get_input();
 
+        // match user input to 1 of 4 values
         match number {
             1 => {
                 print!("\nType a number to find the factorial of: ");
+                // flush stdout to actually print
                 io::stdout().flush().unwrap();
                 let fac_num = get_input();
 
+                // calc and print
                 println!("\n{}! = {}", fac_num, factorial(fac_num));
             }
 
@@ -35,6 +39,7 @@ fn main(){
                 io::stdout().flush().unwrap();
                 let pi_num = get_input();
 
+                // im too lazy to code higher capacity stuff
                 if pi_num > 15{
                     println!("\nInput larger than 15, printing to only 15 digits.")
                 }
@@ -112,7 +117,10 @@ fn find_pi(n: u64) -> f64{
         t = t_next;
     }
 
+    // final computation
     let pi = ((a+b).powf(2.0))/(4.0 * t);
+
+    // trim result to inputted amount
     let result = f64::trunc(pi * (10.0_f64.powf(n as f64))) / (10.0_f64.powf(n as f64));
     result
 }
