@@ -35,7 +35,7 @@ fn main(){
             }
 
             3 => {
-                print!("\nType a number to calculate pi to (up to 15): ");
+                print!("\nType a number of digits to calculate pi to (up to 15): ");
                 io::stdout().flush().unwrap();
                 let pi_num = get_input();
 
@@ -48,7 +48,10 @@ fn main(){
 
             4 => break,
             
-            _ => continue,
+            _ => {
+                println!("\nNot a valid user input.");
+                continue;
+            }
         }
     }
 }
