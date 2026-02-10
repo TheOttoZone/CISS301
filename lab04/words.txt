@@ -1,0 +1,3 @@
+string
+cat paw meow scratch
+dog paw woof scratch bark

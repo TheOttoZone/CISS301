@@ -1,0 +1,3 @@
+integer
+this is not an integer
+i am a big liar
