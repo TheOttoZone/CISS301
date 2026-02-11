@@ -1,3 +1,4 @@
+use std::hash::Hash;
 use std::io;
 use std::collections::HashSet;
 use std::fs;
@@ -26,28 +27,19 @@ fn main() -> std::io::Result<()> {
                     .expect("Found non integer values!");
 
                 let b:HashSet<i32> = content[2]
-                .split_whitespace()
-                .map(|s| s.parse::<i32>())
-                .collect::<Result<HashSet<i32>,_>>()
-                .expect("Found non integer values!");
+                    .split_whitespace()
+                    .map(|s| s.parse::<i32>())
+                    .collect::<Result<HashSet<i32>,_>>()
+                    .expect("Found non integer values!");
                 
-                // do the various things
-                println!("Set A: {a:?}");
-                println!("Set B: {b:?}");
-                println!("A ∪ B: {:?}", a.union(&b).collect::<Vec<_>>());
-                println!("A ∩ B: {:?}", a.intersection(&b).collect::<Vec<_>>());
-                println!("A / B: {:?}", a.difference(&b).collect::<Vec<_>>());  
+                print_results(a, b);  
             }
 
             "string" => {
                 let a:HashSet<String> = content[1].split_whitespace().map(String::from).collect(); // String::from converts &str to string
                 let b:HashSet<String> = content[2].split_whitespace().map(String::from).collect();
 
-                println!("Set A: {a:?}");
-                println!("Set B: {b:?}");
-                println!("A ∪ B: {:?}", a.union(&b).collect::<Vec<_>>());
-                println!("A ∩ B: {:?}", a.intersection(&b).collect::<Vec<_>>());
-                println!("A / B: {:?}", a.difference(&b).collect::<Vec<_>>());   
+                print_results(a, b);
             }
 
             _ => {
@@ -80,11 +72,7 @@ fn main() -> std::io::Result<()> {
                         io::stdin().read_line(&mut input).expect("Failed to read line");
                         let b:HashSet<String> = input.split_whitespace().map(String::from).collect();
 
-                        println!("Set A: {a:?}");
-                        println!("Set B: {b:?}");
-                        println!("A ∪ B: {:?}", a.union(&b).collect::<Vec<_>>());
-                        println!("A ∩ B: {:?}", a.intersection(&b).collect::<Vec<_>>());
-                        println!("A / B: {:?}", a.difference(&b).collect::<Vec<_>>());   
+                        print_results(a,b);
                         break;
                     }
                     break;
@@ -113,11 +101,7 @@ fn main() -> std::io::Result<()> {
                             .collect::<Result<HashSet<i32>, _>>() 
                             .expect("Found non integer values!");
 
-                        println!("Set A: {a:?}");
-                        println!("Set B: {b:?}");
-                        println!("A ∪ B: {:?}", a.union(&b).collect::<Vec<_>>());
-                        println!("A ∩ B: {:?}", a.intersection(&b).collect::<Vec<_>>());
-                        println!("A / B: {:?}", a.difference(&b).collect::<Vec<_>>());   
+                        print_results(a, b);
                         break;
                     }
                     break;
@@ -153,4 +137,13 @@ fn get_int_input() -> u64 {
         }
     }
 
+}
+
+// Universal function that prints any type hashset
+fn print_results<T: std::fmt::Debug + Eq + Hash>(a: HashSet<T>, b: HashSet<T>){
+    println!("Set A: {a:?}");
+    println!("Set B: {b:?}");
+    println!("A ∪ B: {:?}", a.union(&b).collect::<Vec<_>>());
+    println!("A ∩ B: {:?}", a.intersection(&b).collect::<Vec<_>>());
+    println!("A / B: {:?}", a.difference(&b).collect::<Vec<_>>()); 
 }
