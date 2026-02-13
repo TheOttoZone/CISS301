@@ -140,10 +140,12 @@ fn get_int_input() -> u64 {
 }
 
 // Universal function that prints any type hashset
-fn print_results<T: std::fmt::Debug + Eq + Hash>(a: HashSet<T>, b: HashSet<T>){
+fn print_results<T: std::fmt::Debug + Eq + Hash + Clone>(a: HashSet<T>, b: HashSet<T>){
     println!("Set A: {a:?}");
     println!("Set B: {b:?}");
     println!("A ∪ B: {:?}", a.union(&b).collect::<Vec<_>>());
     println!("A ∩ B: {:?}", a.intersection(&b).collect::<Vec<_>>());
-    println!("A / B: {:?}", a.difference(&b).collect::<Vec<_>>()); 
+    println!("A / B: {:?}", a.difference(&b).collect::<Vec<_>>());
+    println!("B / A: {:?}", b.difference(&a).collect::<Vec<_>>()); 
+    println!("A Δ B: {:?}", a.symmetric_difference(&b));
 }
