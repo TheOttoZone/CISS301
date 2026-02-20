@@ -36,19 +36,13 @@ fn main() {
 }
 
 fn reflexive<T: std::fmt::Debug + Eq + Hash + Clone>(set: &HashSet<T>, relation: &HashSet<(T,T)>) -> bool{
-    let mut count = 0;
     for a in set{
-        // track how many equivelant pairs are in the relation
-        if relation.contains(&(a.clone(), a.clone())){
-            count = count +1;
+        // if the function doesnt contain a,a its not reflexive
+        if !relation.contains(&(a.clone(), a.clone())){
+            return false;
         }
     }
-    // if the amount is equal to the set length, it is reflexive
-    if count == set.len(){
-        return true;
-    }else {
-        false
-    }
+    true
 }
 
 fn symmetric<T: std::fmt::Debug + Eq + Hash + Clone>(set: &HashSet<T>, relation: &HashSet<(T,T)>) -> bool{
