@@ -1,8 +1,6 @@
 use regex::Regex;
 use std::env;
 use std::fs::{File, read_to_string};
-use std::io::Read;
-use std::os::linux::raw;
 fn main() {
     let args: Vec<String> = env::args().collect();
 
