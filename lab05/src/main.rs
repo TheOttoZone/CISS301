@@ -30,12 +30,9 @@ fn main() {
         println!("Anti-Symmetric: {}", antisymmetric(&i.set, &i.relation));
         println!("Equivalence relation: {}\n", equivalence(&i.set, &i.relation));
     }
-
-
-    
 }
 
-fn reflexive<T: std::fmt::Debug + Eq + Hash + Clone>(set: &HashSet<T>, relation: &HashSet<(T,T)>) -> bool{
+fn reflexive<T: Eq + Hash + Clone>(set: &HashSet<T>, relation: &HashSet<(T,T)>) -> bool{
     for a in set{
         // if the function doesnt contain a,a its not reflexive
         if !relation.contains(&(a.clone(), a.clone())){
@@ -45,7 +42,7 @@ fn reflexive<T: std::fmt::Debug + Eq + Hash + Clone>(set: &HashSet<T>, relation:
     true
 }
 
-fn symmetric<T: std::fmt::Debug + Eq + Hash + Clone>(set: &HashSet<T>, relation: &HashSet<(T,T)>) -> bool{
+fn symmetric<T: Eq + Hash + Clone>(set: &HashSet<T>, relation: &HashSet<(T,T)>) -> bool{
     for a in set{
         for b in set{
             if relation.contains(&(a.clone(), b.clone())){
@@ -60,7 +57,7 @@ fn symmetric<T: std::fmt::Debug + Eq + Hash + Clone>(set: &HashSet<T>, relation:
     true
 }
 
-fn transitive<T: std::fmt::Debug + Eq + Hash + Clone>(set: &HashSet<T>, relation: &HashSet<(T,T)>) -> bool{
+fn transitive<T: Eq + Hash + Clone>(set: &HashSet<T>, relation: &HashSet<(T,T)>) -> bool{
     for a in set{
         for b in set{
             for c in set{
@@ -76,7 +73,7 @@ fn transitive<T: std::fmt::Debug + Eq + Hash + Clone>(set: &HashSet<T>, relation
     true
 }
 
-fn antisymmetric<T: std::fmt::Debug + Eq + Hash + Clone>(set: &HashSet<T>, relation: &HashSet<(T,T)>) -> bool{
+fn antisymmetric<T: Eq + Hash + Clone>(set: &HashSet<T>, relation: &HashSet<(T,T)>) -> bool{
     for a in set{
         for b in set{
             if relation.contains(&(a.clone(), b.clone())){
