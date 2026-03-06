@@ -5,21 +5,34 @@ state_machine!{
     #[state_machine(input(crate::CharInput), state(crate::CharStates))]
     pub character_machine(Standing)
 
-    Standing(Walk) => Walking,
-    Standing(Jump) => Jumping,
-    Standing(Lay) => Laying,
-    Walking(Stop) => Standing,
-    Walking(Jump) => Jumping,
-    Walking(Walk) => Running,
-    Walking(Lay) => Laying,
-    Running(Stop) => Standing,
-    Running(Jump) => Jumping,
-    Running(Lay) => Dead,
+    Standing => {
+        Walk => Walking,
+        Jump => Jumping,
+        Lay => Sitting
+    },
+    Walking => {
+        Stop => Standing,
+        Jump => Jumping,
+        Walk => Running,
+        Lay => Laying
+    },
+    Running => {
+        Stop => Standing,
+        Jump => Jumping,
+        Lay => Dead
+    },
     Jumping(Fall) => Falling,
     Falling(Stop) => Standing,
-    Laying(Walk) => Walking,
-    Laying(Stop) => Standing,
-    Laying(Jump) => Standing,
+    Sitting => {
+        Lay => Laying,
+        Jump => Standing,
+        Walk => Walking
+    },
+    Laying => {
+        Walk => Walking,
+        Stop => Sitting,
+        Jump => Standing
+    }
 }
 
 pub enum CharInput{
@@ -38,6 +51,7 @@ pub enum CharStates{
     Jumping,
     Laying,
     Falling,
+    Sitting,
     Dead,
 }
 
@@ -78,11 +92,17 @@ impl Character {
                 }
             }
             Direction::Down =>{
-                let _ = self.machine.consume(&CharInput::Lay);
+                if self.machine.state() == &CharStates::Laying{
+                    println!("You can't lay down harder!");
+                }else {
+                    let _ = self.machine.consume(&CharInput::Lay);
+                }
             }
             Direction::Left =>{
                 if self.direction == Direction::Right{ // handle turning right
-                    let _ = self.machine.consume(&CharInput::Stop);
+                    if self.machine.state() != &CharStates::Falling && self.machine.state() != &CharStates::Jumping{
+                        let _ = self.machine.consume(&CharInput::Stop);
+                    }
                     self.direction = Direction::Left;
                 }else{
                     let _ = self.machine.consume(&CharInput::Walk);
@@ -91,7 +111,9 @@ impl Character {
             },
             Direction::Right =>{
                 if self.direction == Direction::Left{ // handle turning left
-                    let _ = self.machine.consume(&CharInput::Stop);
+                    if self.machine.state() != &CharStates::Falling && self.machine.state() != &CharStates::Jumping{
+                        let _ = self.machine.consume(&CharInput::Stop);
+                    }
                     self.direction = Direction::Right
                 }else{
                     let _ = self.machine.consume(&CharInput::Walk);
@@ -140,11 +162,6 @@ impl Character {
                 }
             }else{
                 let _ = self.machine.consume(&CharInput::Stop);
-            }
-        }
-        if let CharStates::Laying = self.machine.state(){
-            if self.direction == Direction::Down{
-                println!("You can't lay down harder!");
             }
         }
     }
